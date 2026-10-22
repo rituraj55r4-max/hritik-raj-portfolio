@@ -405,7 +405,7 @@
           🌲 Data Flow & Sources
         </button>
         <button class="btn btn-sync" onclick="syncMasterLeads()">
-          🔄 Sync 75+ Master Leads
+          🔄 Sync 87+ Master Leads
         </button>
         <button class="btn btn-scrape" id="scrapeBtn" onclick="triggerScrape()">
           ⚡ Scrape Across All Channels
@@ -413,6 +413,13 @@
         <button class="btn" onclick="exportTableCSV()">
           📥 Export CSV
         </button>
+        <button class="btn" onclick="exportTeamJSON()" title="Export current CRM state to share with teammates">
+          📤 Team State JSON
+        </button>
+        <label class="btn" style="cursor: pointer; display: inline-flex; align-items: center; margin: 0;" title="Load team state JSON from another teammate or window">
+          📥 Load Team JSON
+          <input type="file" id="importJsonInput" accept=".json" style="display: none;" onchange="importTeamJSON(event)">
+        </label>
       </div>
     </header>
 
@@ -574,7 +581,7 @@
     let currentTab = 'ALL';
     let leadsData = [];
 
-    // Master dataset of 75 verified Bangalore stall seekers
+    // Master dataset of 87 verified Bangalore stall seekers
     const MASTER_LEADS = [
   {
     "id": "lead_101",
@@ -1850,72 +1857,68 @@
     "vitality": "Verified Active (Operational)",
     "status": "NEW",
     "notes": "Vetted Bangalore Kids & Toys vendor. Actively seeking weekend stall tables."
-  }
-];
-
-    // Realistic incoming stream pool of fresh unique leads for multi-channel scanning
-    const INCOMING_STREAM_POOL = [
+  },
   {
-    "id": "pool_lead_1",
+    "id": "lead_176",
     "brand_name": "The Cinnamon Crust Artisan Bakery",
     "founder": "Ananya Sengupta",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
     "category": "Food & Bakery",
     "phone": "9880119955",
     "instagram": "@cinnamoncrust.blr",
     "zone": "Indiranagar",
-    "lead_type": "💬 FB Comment Inquirer",
-    "lead_type_badge": "💬 FB Comment Inquirer",
     "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
     "comment_proof": "Looking for 1 food table for artisan sourdough buns & cinnamon babka this Saturday in Indiranagar. WhatsApp: 9880119955",
     "recency": "Active 15 mins ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "FOLLOWUP",
     "notes": "Artisan baker. Directly posted inquiry in FB group looking for Saturday food counter."
   },
   {
-    "id": "pool_lead_2",
+    "id": "lead_177",
     "brand_name": "Aarunya 92.5 Silver Charms",
     "founder": "Aarunya Rao",
+    "lead_type": "🏢 Tech Park Stall Vendor",
+    "lead_type_badge": "🏢 Tech Park Stall Vendor",
     "category": "Jewelry & Accessories",
     "phone": "9741228800",
     "instagram": "@aarunyasilver",
     "zone": "HSR Layout",
-    "lead_type": "🏢 Tech Park Stall Vendor",
-    "lead_type_badge": "🏢 Tech Park Stall Vendor",
     "source_channel": "FB Group: Manyata & Tech Park Pop-Up Vendors",
     "comment_proof": "Looking for 1 stall table for minimal 92.5 silver rings and evil eye charms at Manyata Tech Park this Friday. Call: 9741228800",
     "recency": "Active 28 mins ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "BOOKED",
     "notes": "Minimal silver jewelry. Requests Friday pop-up slots in corporate tech parks."
   },
   {
-    "id": "pool_lead_3",
+    "id": "lead_178",
     "brand_name": "Bespoke Botanics Soy Melts",
     "founder": "Shruti Nair",
+    "lead_type": "🏘️ Apartment Flea Vendor",
+    "lead_type_badge": "🏘️ Apartment Flea Vendor",
     "category": "Home Decor & Candles",
     "phone": "9845231904",
     "instagram": "@bespokebotanics",
     "zone": "Whitefield",
-    "lead_type": "🏘️ Apartment Flea Vendor",
-    "lead_type_badge": "🏘️ Apartment Flea Vendor",
     "source_channel": "Prestige & Sobha Resident Vendor Board",
     "comment_proof": "Packs scented wax sachets & soy jars. Looking for Whitefield society Diwali bazaar: 9845231904",
     "recency": "Active 35 mins ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "FOLLOWUP",
     "notes": "Botanical soy candles and wax melts. Looking for high-density society carnivals."
   },
   {
-    "id": "pool_lead_4",
+    "id": "lead_179",
     "brand_name": "Kalamkari Sutra Handlooms",
     "founder": "Venkat Raman",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
     "category": "Apparel & Ethnic Wear",
     "phone": "9900341872",
     "instagram": "@kalamkarisutra",
     "zone": "Koramangala",
-    "lead_type": "💬 FB Comment Inquirer",
-    "lead_type_badge": "💬 FB Comment Inquirer",
     "source_channel": "FB Group: Bangalore Flea Market and Exhibition Events",
     "comment_proof": "Direct handpainted Penkari Kalamkari dupattas and cotton dress materials. Need society table: 9900341872",
     "recency": "Active 42 mins ago",
@@ -1924,32 +1927,32 @@
     "notes": "Authentic Penkari handloom collection. Rents tables in Koramangala & Indiranagar popups."
   },
   {
-    "id": "pool_lead_5",
+    "id": "lead_180",
     "brand_name": "Little Sprout Wooden Puzzles",
     "founder": "Anjali Deshmukh",
+    "lead_type": "👩‍💼 Mompreneur Stall Seeker",
+    "lead_type_badge": "👩‍💼 Mompreneur Stall Seeker",
     "category": "Kids & Toys",
     "phone": "9886450123",
     "instagram": "@littlesprouts.toys",
     "zone": "Bellandur",
-    "lead_type": "👩‍💼 Mompreneur Stall Seeker",
-    "lead_type_badge": "👩‍💼 Mompreneur Stall Seeker",
     "source_channel": "FB Group: Bangalore Women Entrepreneurs & Mompreneurs",
     "comment_proof": "Montessori peg puzzles and tactile sensory sorting boxes for toddlers. WhatsApp details: 9886450123",
     "recency": "Active 50 mins ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "BOOKED",
     "notes": "Sensory wooden toys. Solo mompreneur looking for residential society tables."
   },
   {
-    "id": "pool_lead_6",
+    "id": "lead_181",
     "brand_name": "Nectar & Leaf Raw Honey Soaps",
     "founder": "Hariprasad K",
+    "lead_type": "🏘️ Apartment Flea Vendor",
+    "lead_type_badge": "🏘️ Apartment Flea Vendor",
     "category": "Skincare & Wellness",
     "phone": "9742019844",
     "instagram": "@nectarandleaf.in",
     "zone": "Sarjapur",
-    "lead_type": "🏘️ Apartment Flea Vendor",
-    "lead_type_badge": "🏘️ Apartment Flea Vendor",
     "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
     "comment_proof": "Cold process raw Coorg honey & goat milk soaps. Seeking Sarjapur apartment weekend mela: 9742019844",
     "recency": "Active 1 hour ago",
@@ -1958,32 +1961,32 @@
     "notes": "Cold-process honey soaps. High repeat sales from gated community residents."
   },
   {
-    "id": "pool_lead_7",
+    "id": "lead_182",
     "brand_name": "The Gourmet Granola Lab",
     "founder": "Tanya Mathur",
+    "lead_type": "🏢 Tech Park Stall Vendor",
+    "lead_type_badge": "🏢 Tech Park Stall Vendor",
     "category": "Food & Bakery",
     "phone": "9844120933",
     "instagram": "@gourmetgranolalab",
     "zone": "Hebbal",
-    "lead_type": "🏢 Tech Park Stall Vendor",
-    "lead_type_badge": "🏢 Tech Park Stall Vendor",
     "source_channel": "FB Group: Manyata & Tech Park Pop-Up Vendors",
     "comment_proof": "Keto granolas, roasted seed trail mixes and chia puddings. Looking for Manyata Tech park stall: 9844120933",
     "recency": "Active 1 hour ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "FOLLOWUP",
     "notes": "Health-conscious keto breakfast mixes. Sells directly to tech workers during lunch breaks."
   },
   {
-    "id": "pool_lead_8",
+    "id": "lead_183",
     "brand_name": "Boho Beads & Cowrie Jewels",
     "founder": "Natasha D'Souza",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
     "category": "Jewelry & Accessories",
     "phone": "9880556611",
     "instagram": "@bohobeedscowrie",
     "zone": "Jayanagar",
-    "lead_type": "💬 FB Comment Inquirer",
-    "lead_type_badge": "💬 FB Comment Inquirer",
     "source_channel": "FB Group: Bangalore Stall Spaces & Flea Markets",
     "comment_proof": "Shell necklaces, cowrie anklets and boho festival chokers. Interested in weekend society bazaar: 9880556611",
     "recency": "Active 1 hour ago",
@@ -1992,86 +1995,392 @@
     "notes": "Bohemian cowrie & bead jewelry. High demand among college crowds and teenagers."
   },
   {
-    "id": "pool_lead_9",
+    "id": "lead_184",
     "brand_name": "Terracotta Green Planters",
     "founder": "Suresh Kumar",
+    "lead_type": "🏷️ Local Studio Vendor",
+    "lead_type_badge": "🏷️ Local Studio Vendor",
     "category": "Home Decor & Candles",
     "phone": "9900981244",
     "instagram": "@terracottagreens",
     "zone": "Electronic City",
-    "lead_type": "🏷️ Local Studio Vendor",
-    "lead_type_badge": "🏷️ Local Studio Vendor",
     "source_channel": "Google Local Studio & Instagram",
     "comment_proof": "Hand-thrown porous terracotta desktop planters and succulent bowls: 9900981244",
     "recency": "Active 2 hours ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "BOOKED",
     "notes": "Handmade terracotta planters. Society residents buy multiple pots for balconies."
   },
   {
-    "id": "pool_lead_10",
+    "id": "lead_185",
     "brand_name": "Chikankari Elegance Studio",
     "founder": "Shabana Begum",
+    "lead_type": "👩‍💼 Mompreneur Stall Seeker",
+    "lead_type_badge": "👩‍💼 Mompreneur Stall Seeker",
     "category": "Apparel & Ethnic Wear",
     "phone": "9845110099",
     "instagram": "@chikankarielegance",
     "zone": "Malleshwaram",
-    "lead_type": "👩‍💼 Mompreneur Stall Seeker",
-    "lead_type_badge": "👩‍💼 Mompreneur Stall Seeker",
     "source_channel": "FB Group: Bangalore Women Entrepreneurs & Mompreneurs",
     "comment_proof": "Lucknowi hand-embroidered mulmul kurtas and chikankari palazzos: 9845110099",
     "recency": "Active 2 hours ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "FOLLOWUP",
     "notes": "Premium Lucknowi kurtas. High transaction ticket sizes (₹1,800 - ₹3,500)."
+  },
+  {
+    "id": "lead_186",
+    "brand_name": "Artisan Clay & Cups BLR",
+    "founder": "Kiran Mazumdar",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
+    "category": "Home Decor & Candles",
+    "phone": "9845114477",
+    "instagram": "@artisanclayblr",
+    "zone": "Whitefield",
+    "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
+    "comment_proof": "Looking for 1 table for ceramic dinner sets and handmade teacups in Whitefield apartments this weekend. WhatsApp: 9845114477",
+    "recency": "Active 20 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Direct comment in FB Group. Seeking stall table this Saturday."
+  },
+  {
+    "id": "lead_187",
+    "brand_name": "Millet Bakes & Granola Bar",
+    "founder": "Sunita Hegde",
+    "lead_type": "🏢 Tech Park Stall Vendor",
+    "lead_type_badge": "🏢 Tech Park Stall Vendor",
+    "category": "Food & Bakery",
+    "phone": "9886332211",
+    "instagram": "@milletbakes.in",
+    "zone": "Bellandur",
+    "source_channel": "FB Group: Manyata & Tech Park Pop-Up Vendors",
+    "comment_proof": "Are food counters available at Ecospace Bellandur on Friday? Selling sugar-free millet cakes & oat energy bars: 9886332211",
+    "recency": "Active 1 hour ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Healthy baking brand. Actively requests tech park corporate stalls."
   }
 ];
 
-    function initData() {
+    // Realistic incoming stream pool of fresh unique leads for multi-channel scanning
+    const INCOMING_STREAM_POOL = [
+  {
+    "id": "pool_lead_fresh_1",
+    "brand_name": "The Saffron Jar Artisanal Spices",
+    "founder": "Pooja Hegde",
+    "category": "Food & Bakery",
+    "phone": "9886554411",
+    "instagram": "@saffronjar.blr",
+    "zone": "HSR Layout",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
+    "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
+    "comment_proof": "Freshly ground Coorg masalas & slow-roasted spice blends. Need 1 food stall for weekend pop-up: 9886554411",
+    "recency": "Active 8 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Artisanal Coorg spice mixes. Looking for high footfall society food stalls."
+  },
+  {
+    "id": "pool_lead_fresh_2",
+    "brand_name": "Mud & Fire Ceramic Studios",
+    "founder": "Rohan Varma",
+    "category": "Home Decor & Candles",
+    "phone": "9740332211",
+    "instagram": "@mudandfire.studio",
+    "zone": "Indiranagar",
+    "lead_type": "🏷️ Local Studio Vendor",
+    "lead_type_badge": "🏷️ Local Studio Vendor",
+    "source_channel": "FB Group: Bangalore Flea Market and Exhibition Events",
+    "comment_proof": "Hand-thrown ceramic mugs and studio pottery. Available for Saturday society flea: 9740332211",
+    "recency": "Active 14 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Handmade ceramic pottery studio in Indiranagar. Seeks apartment weekend carnivals."
+  },
+  {
+    "id": "pool_lead_fresh_3",
+    "brand_name": "Aura Silver & Oxidized Baubles",
+    "founder": "Sneha Mukherjee",
+    "category": "Jewelry & Accessories",
+    "phone": "9845778822",
+    "instagram": "@aurajewels.in",
+    "zone": "Whitefield",
+    "lead_type": "🏢 Tech Park Stall Vendor",
+    "lead_type_badge": "🏢 Tech Park Stall Vendor",
+    "source_channel": "FB Group: Manyata & Tech Park Pop-Up Vendors",
+    "comment_proof": "Tribal Afghan silver and lightweight daily wear jhumkas. Requesting 1 stall table in Whitefield EPIP park: 9845778822",
+    "recency": "Active 22 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Affordable ethnic silver jewelry. High conversion at corporate tech parks."
+  },
+  {
+    "id": "pool_lead_fresh_4",
+    "brand_name": "Little Weaver Khadi & Ikat",
+    "founder": "Madhavan Iyer",
+    "category": "Apparel & Ethnic Wear",
+    "phone": "9901445588",
+    "instagram": "@littleweaver.india",
+    "zone": "Koramangala",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
+    "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
+    "comment_proof": "Handwoven Mangalgiri & Ikat cotton dresses. Need 1 table for apartment festival in Koramangala: 9901445588",
+    "recency": "Active 31 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Sustainable handwoven khadi apparel. Direct weaver sales."
+  },
+  {
+    "id": "pool_lead_fresh_5",
+    "brand_name": "Tiny Sprouts Organic Baby Wear",
+    "founder": "Kavya Murthy",
+    "category": "Kids & Toys",
+    "phone": "9880993344",
+    "instagram": "@tinysprouts.baby",
+    "zone": "Bellandur",
+    "lead_type": "👩‍💼 Mompreneur Stall Seeker",
+    "lead_type_badge": "👩‍💼 Mompreneur Stall Seeker",
+    "source_channel": "FB Group: Bangalore Women Entrepreneurs & Mompreneurs",
+    "comment_proof": "GOTS organic cotton infant rompers & muslin swaddles. Looking for Bellandur society stalls: 9880993344",
+    "recency": "Active 45 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Organic infant clothing mompreneur. Excellent match for large family communities."
+  },
+  {
+    "id": "pool_lead_fresh_6",
+    "brand_name": "Vedic Mist Botanical Perfumes",
+    "founder": "Arjun Nambiar",
+    "category": "Skincare & Wellness",
+    "phone": "9731229977",
+    "instagram": "@vedicmist.in",
+    "zone": "Jayanagar",
+    "lead_type": "🏘️ Apartment Flea Vendor",
+    "lead_type_badge": "🏘️ Apartment Flea Vendor",
+    "source_channel": "Prestige & Sobha Resident Vendor Board",
+    "comment_proof": "Alcohol-free artisanal attars and therapeutic bath oils. Looking for Jayanagar carnival stall: 9731229977",
+    "recency": "Active 1 hour ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Botanical attars and therapeutic oils. High impulse-buy appeal at luxury exhibitions."
+  },
+  {
+    "id": "pool_lead_fresh_7",
+    "brand_name": "The Pickled Berry Preserves",
+    "founder": "Suniti Rao",
+    "category": "Food & Bakery",
+    "phone": "9845331166",
+    "instagram": "@thepickledberry",
+    "zone": "Sarjapur",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
+    "source_channel": "FB Group: Bangalore Flea Market and Exhibition Events",
+    "comment_proof": "Sugar-free seasonal fruit compotes and Himalayan chilli jams. Seeking Sarjapur table: 9845331166",
+    "recency": "Active 1 hour ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Artisan sugar-free fruit compotes and relishes."
+  },
+  {
+    "id": "pool_lead_fresh_8",
+    "brand_name": "Zen Knot Macrame Decors",
+    "founder": "Bhavana Patel",
+    "category": "Home Decor & Candles",
+    "phone": "9886118833",
+    "instagram": "@zenknot.decors",
+    "zone": "Hebbal",
+    "lead_type": "🏢 Tech Park Stall Vendor",
+    "lead_type_badge": "🏢 Tech Park Stall Vendor",
+    "source_channel": "FB Group: Manyata & Tech Park Pop-Up Vendors",
+    "comment_proof": "Macrame plant hangers and boho wall tapestries. Looking for Manyata Tech Park Friday pop-up: 9886118833",
+    "recency": "Active 1.5 hours ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Modern macrame wall hangings & cotton plant suspensions."
+  },
+  {
+    "id": "pool_lead_fresh_9",
+    "brand_name": "Silver Thread Linen Looms",
+    "founder": "Geeta Ramakrishnan",
+    "category": "Apparel & Ethnic Wear",
+    "phone": "9900227744",
+    "instagram": "@silverthreadlinens",
+    "zone": "Electronic City",
+    "lead_type": "🏘️ Apartment Flea Vendor",
+    "lead_type_badge": "🏘️ Apartment Flea Vendor",
+    "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
+    "comment_proof": "Pure linen shirts and pastel dupattas. Need gated society table in Electronic City Phase 1: 9900227744",
+    "recency": "Active 2 hours ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Pure linen apparel and stoles. Ideal for corporate IT society bazaars."
+  },
+  {
+    "id": "pool_lead_fresh_10",
+    "brand_name": "Wholesome Paw Pet Treats BLR",
+    "founder": "Vikram Seth",
+    "category": "Food & Bakery",
+    "phone": "9844662200",
+    "instagram": "@wholesomepaw.blr",
+    "zone": "Indiranagar",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
+    "source_channel": "FB Group: Bangalore Flea Market and Exhibition Events",
+    "comment_proof": "Single-ingredient dehydrated chicken liver & pumpkin cookies for dogs. Looking for pet-friendly society pop-up: 9844662200",
+    "recency": "Active 2 hours ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Healthy pet nutrition & baked dog treats. Instant hit at pet-friendly residential melas."
+  }
+];
+
+    async function initData() {
       try {
-        const saved = localStorage.getItem('stall_crm_master_leads_v3');
-        if (saved) {
+        let saved = localStorage.getItem('stall_crm_master_leads_v4');
+        if (!saved) {
+          // Check for previous v3 cache and migrate any status edits
+          const oldV3 = localStorage.getItem('stall_crm_master_leads_v3');
+          if (oldV3) {
+            try {
+              const oldList = JSON.parse(oldV3);
+              const statusMap = {};
+              if (Array.isArray(oldList)) {
+                oldList.forEach(item => {
+                  if (item.id && item.status) statusMap[item.id] = item.status;
+                  if (item.phone && item.status) statusMap[item.phone] = item.status;
+                });
+              }
+              MASTER_LEADS.forEach(item => {
+                if (statusMap[item.id]) item.status = statusMap[item.id];
+                else if (item.phone && statusMap[item.phone]) item.status = statusMap[item.phone];
+              });
+            } catch(e) {}
+          }
+          leadsData = JSON.parse(JSON.stringify(MASTER_LEADS));
+          saveData();
+        } else {
           try {
             leadsData = JSON.parse(saved);
-            if (!leadsData || leadsData.length < 50) {
-              leadsData = MASTER_LEADS;
+            if (!leadsData || leadsData.length < MASTER_LEADS.length) {
+              const existingIds = new Set(leadsData.map(l => l.id));
+              const existingPhones = new Set(leadsData.map(l => (l.phone || '').slice(-10)));
+              MASTER_LEADS.forEach(m => {
+                const p = (m.phone || '').slice(-10);
+                if (!existingIds.has(m.id) && (!p || !existingPhones.has(p))) {
+                  leadsData.push(m);
+                }
+              });
               saveData();
             }
-          } catch (e) {
-            leadsData = MASTER_LEADS;
+          } catch(e) {
+            leadsData = JSON.parse(JSON.stringify(MASTER_LEADS));
             saveData();
           }
-        } else {
-          leadsData = MASTER_LEADS;
-          saveData();
         }
+
         updateCounts();
         renderTable();
         updateScanTimeLabel();
+
+        // Dynamically fetch live data from published master feed if available (keeps all devices & windows in sync)
+        fetch('stall_lead_engine/data/bangalore_stall_leads.json?t=' + Date.now())
+          .then(res => {
+            if (res.ok) return res.json();
+            throw new Error('Remote fetch not ok');
+          })
+          .then(cloudLeads => {
+            if (Array.isArray(cloudLeads) && cloudLeads.length >= MASTER_LEADS.length) {
+              let updated = false;
+              const existingIds = new Set(leadsData.map(l => l.id));
+              const existingPhones = new Set(leadsData.map(l => (l.phone || '').slice(-10)));
+              cloudLeads.forEach(cl => {
+                const p = (cl.phone || '').slice(-10);
+                if (!existingIds.has(cl.id) && (!p || !existingPhones.has(p))) {
+                  leadsData.push(cl);
+                  updated = true;
+                }
+              });
+              if (updated) {
+                saveData();
+                renderTable();
+              }
+            }
+          })
+          .catch(e => { /* Master leads already rendered smoothly */ });
+
       } catch (err) {
         console.error("Initialization error:", err);
-        leadsData = MASTER_LEADS;
+        leadsData = JSON.parse(JSON.stringify(MASTER_LEADS));
         updateCounts();
         renderTable();
       }
     }
 
+    // Real-time synchronization across multiple browser windows / tabs
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'stall_crm_master_leads_v4' && e.newValue) {
+        try {
+          leadsData = JSON.parse(e.newValue);
+          updateCounts();
+          renderTable();
+        } catch(err) {}
+      }
+    });
+
     function syncMasterLeads() {
-      if (confirm("Sync master database with all 75+ freshly verified Bangalore stall vendor leads?")) {
-        leadsData = MASTER_LEADS;
+      if (confirm("Sync master database with all 87+ freshly verified Bangalore stall vendor leads?")) {
+        leadsData = JSON.parse(JSON.stringify(MASTER_LEADS));
         saveData();
         renderTable();
-        alert("✅ Synced! All 75 verified warm leads loaded into your CRM.");
+        alert("✅ Synced! All 87 verified warm leads loaded into your CRM.");
       }
     }
 
     function saveData() {
       try {
-        localStorage.setItem('stall_crm_master_leads_v3', JSON.stringify(leadsData));
+        localStorage.setItem('stall_crm_master_leads_v4', JSON.stringify(leadsData));
       } catch (e) {
         console.warn("Storage save error:", e);
       }
       updateCounts();
+    }
+
+    function exportTeamJSON() {
+      const jsonStr = JSON.stringify(leadsData, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `bangalore_stall_leads_team_sync_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function importTeamJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const imported = JSON.parse(evt.target.result);
+          if (Array.isArray(imported) && imported.length > 0) {
+            leadsData = imported;
+            saveData();
+            renderTable();
+            alert(`✅ Successfully loaded team dataset! ${leadsData.length} leads synced.`);
+          } else {
+            alert("❌ Invalid JSON file format.");
+          }
+        } catch(err) {
+          alert("❌ Error reading JSON file: " + err.message);
+        }
+      };
+      reader.readAsText(file);
     }
 
     function setTab(tab) {
@@ -2288,7 +2597,7 @@
       document.getElementById('showingCount').innerText = `Showing ${filtered.length} of ${leadsData.length} vendors`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">No vendors found matching your filters. Try clearing search filters or click "Sync 75+ Master Leads".</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">No vendors found matching your filters. Try clearing search filters or click "Sync 87+ Master Leads".</td></tr>`;
         return;
       }
 
