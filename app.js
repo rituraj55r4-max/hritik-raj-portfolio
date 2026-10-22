@@ -28,18 +28,13 @@ $('#cpa-form').addEventListener('submit',e=>{e.preventDefault();const v=Object.f
 function whatsappUrl(message){return 'https://wa.me/916206949659?text='+encodeURIComponent(message);}
 const contactEmail='joinhritikraj2002@gmail.com';
 const contactForm=$('#contact-form');
-const todayIST=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-contactForm.elements.date.min=todayIST;
 function clearContactDraft(){ $('#contact-delivery').hidden=true; $('#contact-status').textContent=''; $('#contact-message').textContent=''; ['#send-whatsapp','#send-gmail','#send-email'].forEach(id=>$(id).removeAttribute('href')); }
 contactForm.addEventListener('input',clearContactDraft);
 contactForm.addEventListener('change',clearContactDraft);
 contactForm.addEventListener('submit',e=>{
  e.preventDefault(); clearContactDraft();
  const f=new FormData(contactForm);
- const start=new Date(`${f.get('date')}T${f.get('time')}:00+05:30`);
- if(!Number.isFinite(start.getTime())||start<=new Date()){ $('#contact-status').textContent='Please choose a future interview date and time in IST.'; return; }
- const when=new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',dateStyle:'long',timeStyle:'short'}).format(start)+' IST (UTC+05:30)';
- const body=`Hi Hritik,\n\nI am contacting you about a job opportunity.\n\nName: ${f.get('name')}\nWork email: ${f.get('email')}\nCompany: ${f.get('company')}\nContacting as: ${f.get('sender')}\nRole: ${f.get('role')}\n\nRole details:\n${f.get('details')}\n\nPreferred interview: ${when}\n\nPlease confirm your interest and whether this time works for you.`;
+ const body=`Hi Hritik,\n\nI am contacting you about a job opportunity.\n\nName: ${f.get('name')}\nWork email: ${f.get('email')}\nCompany: ${f.get('company')}\nContacting as: ${f.get('sender')}\nRole: ${f.get('role')}\n\nRole details:\n${f.get('details')}\n\nPlease let me know your interest and availability.`;
  const subject=`Job opportunity: ${f.get('role')} at ${f.get('company')}`;
  $('#contact-message').textContent=body;
  $('#send-whatsapp').href=whatsappUrl(body);
@@ -77,3 +72,5 @@ fetch('data/campaign.json')
     if(d.note&&$('#campaign-note'))$('#campaign-note').textContent=d.note;
   })
   .catch(()=>{});
+
+
