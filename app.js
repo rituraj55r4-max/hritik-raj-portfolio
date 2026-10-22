@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
 const INR = new Intl.NumberFormat('en-IN', {style:'currency',currency:'INR',maximumFractionDigits:0});
@@ -92,7 +92,6 @@ contactForm.addEventListener('submit',e=>{
  $('#contact-status').textContent='Your message is ready for both apps. Nothing has been sent yet.';
 });
 $$('[data-example]').forEach(b=>b.addEventListener('click',()=>{const doctor=b.dataset.example==='doctor';const form=$(doctor?'#doctor-form':'#cpa-form');const values=doctor?{ctr:1.2,cpc:18,cpm:216,frequency:2.3,targetCtr:1.5,targetCpc:15}:{revenue:1500,productCost:600,otherCost:200,profit:150};Object.entries(values).forEach(([key,value])=>form.elements[key].value=value);form.requestSubmit();}));
-$('#play-tutorial').addEventListener('click',()=>{const v=$('#tutorial');v.scrollIntoView({behavior:motionPaused?'auto':'smooth',block:'center'});v.play().catch(()=>v.focus());});
 $('#year').textContent=new Date().getFullYear();
 
 // Video position follows scroll distance; it never autoplays behind the text.
