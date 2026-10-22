@@ -14,12 +14,60 @@ renderAccount('campaigns');wireTabs('[data-account]',b=>renderAccount(b.dataset.
 wireTabs('[data-view]',b=>{$$('.view-panel').forEach(p=>p.hidden=true);$('#'+b.getAttribute('aria-controls')).hidden=false;});
 
 $('#project-grid').innerHTML=campaigns.map(c=>`<article class="project-card"><div class="case-art ${c.theme}"><span class="art-kicker">${c.category}</span><strong>${c.metric}</strong><span class="metric-caption">${c.metricLabel}</span><div class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="case-art-foot">${c.id==='agency'?'A PLAN FOR CONTRIBUTION':'SOURCE-LINKED · INDEPENDENT PERSPECTIVE'}</span></div><div class="project-info"><span class="micro-label">${c.tag}</span><h3>${c.name}</h3><p>${c.description}</p><div class="project-metadata"><span>${c.goal}</span><span>Hritik’s perspective</span></div><button class="text-link" data-project="${c.id}">Read ${c.id==='agency'?'the proposal':'the case study'} <span>↗</span></button></div></article>`).join('');
-function openProject(id){const c=campaigns.find(c=>c.id===id);if(!c)return;$('#project-detail').innerHTML=`<div class="detail-heading"><div><span class="micro-label">${c.category}</span><h2 id="dialog-title">${c.name}</h2><p>${c.intro}</p></div></div><div class="authorship-note"><strong>Independent work by Hritik Raj</strong><p>${c.source?'I did not manage this campaign or work with this brand. Published results are attributed to the original team and have not been independently audited. The recommendations below are my own proposed work.':'An original job proposal. This is not a client engagement, a record of completed work or a guarantee of results.'}</p></div>${c.evidence?`<section class="detail-section"><h3>What the source reports</h3><p>${c.evidence}</p><a class="source-link" href="${c.source}" target="_blank" rel="noopener noreferrer">${c.sourceLabel} ↗</a><p class="detail-note">Source reviewed 18 October 2026. Read the original for its full methodology.</p></section>`:''}<div class="case-metrics">${c.metrics.map(m=>`<div><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('')}</div><div class="case-sections">${c.sections.map((s,i)=>`<section><span class="section-number">${String(i+1).padStart(2,'0')}</span><div><h3>${s[0]}</h3><p>${s[1]}</p></div></section>`).join('')}</div>${c.ideas?`<section class="detail-section"><span class="micro-label">MY ORIGINAL CREATIVE CONCEPTS</span><h3>Three directions I would brief</h3><p class="detail-note">Proposed copy and storyboards, not the brand’s actual ads. Product facts, offers and permissions require approval before use.</p><div class="concept-directions">${c.ideas.map((a,i)=>`<article><span>CONCEPT 0${i+1}</span><h4>${a[0]}</h4><p>${a[1]}</p></article>`).join('')}</div></section>`:''}<div class="note-box">${c.takeaway}</div><div class="detail-actions"><button class="button primary" type="button" id="case-hire">Discuss a role with me ↗</button><span class="detail-note">Research. Clear hypotheses. Accountable decisions.</span></div>`;$('#case-hire').addEventListener('click',()=>{$('#project-dialog').close();$('#work').scrollIntoView({behavior:motionPaused?'auto':'smooth'});});$('#project-dialog').showModal();$('#project-dialog').scrollTop=0;}
+function openProject(id){const c=campaigns.find(c=>c.id===id);if(!c)return;$('#project-detail').innerHTML=`<div class="detail-heading"><div><span class="micro-label">${c.category}</span><h2 id="dialog-title">${c.name}</h2><p>${c.intro}</p></div></div><div class="authorship-note"><strong>Independent work by Hritik Raj</strong><p>${c.source?'I did not manage this campaign or work with this brand. Published results are attributed to the original team and have not been independently audited. The recommendations below are my own proposed work.':'An original job proposal. This is not a client engagement, a record of completed work or a guarantee of results.'}</p></div>${c.evidence?`<section class="detail-section"><h3>What the source reports</h3><p>${c.evidence}</p><a class="source-link" href="${c.source}" target="_blank" rel="noopener noreferrer">${c.sourceLabel} ↗</a><p class="detail-note">Source reviewed 18 October 2026. Read the original for its full methodology.</p></section>`:''}<div class="case-metrics">${c.metrics.map(m=>`<div><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join('')}</div><div class="case-sections">${c.sections.map((s,i)=>`<section><span class="section-number">${String(i+1).padStart(2,'0')}</span><div><h3>${s[0]}</h3><p>${s[1]}</p></div></section>`).join('')}</div>${c.ideas?`<section class="detail-section"><span class="micro-label">MY ORIGINAL CREATIVE CONCEPTS</span><h3>Three directions I would brief</h3><p class="detail-note">Proposed copy and storyboards, not the brand’s actual ads. Product facts, offers and permissions require approval before use.</p><div class="concept-directions">${c.ideas.map((a,i)=>`<article><span>CONCEPT 0${i+1}</span><h4>${a[0]}</h4><p>${a[1]}</p></article>`).join('')}</div></section>`:''}<div class="note-box">${c.takeaway}</div><div class="detail-actions"><button class="button primary" type="button" id="case-hire">Discuss a role with me ↗</button><span class="detail-note">Research. Clear hypotheses. Accountable decisions.</span></div>`;$('#case-hire').addEventListener('click',()=>{$('#project-dialog').close();openRoleModal();});$('#project-dialog').showModal();$('#project-dialog').scrollTop=0;}
 $$('[data-project]').forEach(b=>b.addEventListener('click',()=>openProject(b.dataset.project)));
 $('[data-open-agency]').addEventListener('click',e=>{e.preventDefault();openProject('agency');});
 $$('.close-dialog').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
 $$('dialog').forEach(d=>d.addEventListener('click',e=>{const r=d.getBoundingClientRect();if(e.target===d&&(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom))d.close();}));
 $('#privacy-button').addEventListener('click',()=>$('#privacy-dialog').showModal());
+
+// Role Modal Popup
+const roleDialog = $('#role-dialog');
+function openRoleModal(){
+  if(!roleDialog)return;
+  try{
+    if(typeof roleDialog.showModal==='function'){
+      if(!roleDialog.open) roleDialog.showModal();
+    } else {
+      roleDialog.setAttribute('open','');
+    }
+  }catch(e){console.error('Role modal open error:',e);}
+}
+function closeRoleModal(){
+  if(!roleDialog)return;
+  try{
+    if(typeof roleDialog.close==='function'){
+      roleDialog.close();
+    } else {
+      roleDialog.removeAttribute('open');
+    }
+  }catch(e){console.error('Role modal close error:',e);}
+}
+
+// Auto popup on page load so visitors see role inquiry first
+if(roleDialog){
+  openRoleModal();
+}
+
+// Open from Section 03 button
+const openRoleWorkBtn = $('#open-role-from-work-btn');
+if(openRoleWorkBtn){
+  openRoleWorkBtn.addEventListener('click', openRoleModal);
+}
+
+// Dismiss from inside modal
+const exploreBtn = $('#explore-portfolio-btn');
+if(exploreBtn){
+  exploreBtn.addEventListener('click', closeRoleModal);
+}
+
+// Topbar & rail navigation links
+$$('.topbar nav a[href="#work"], .rail-links a[href="#work"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    openRoleModal();
+  });
+});
 
 function doctorAnalysis(v){const out=[];if(v.ctr<v.targetCtr)out.push('Link CTR is below your target. Test a clearer opening hook, offer and first frame while keeping the audience stable.');else out.push('Link CTR meets your target. Check lead or purchase quality before increasing spend.');if(v.cpc>v.targetCpc)out.push('Link CPC is above your target. Check whether CPM rose, CTR fell, or both; compare with a similar period and placement mix.');else out.push('Link CPC meets your target. A low click cost still needs downstream conversion evidence.');if(v.frequency>=3)out.push('Frequency is at least 3 in the reporting period. Check whether reach is stalling and CTR is declining before diagnosing fatigue; frequency alone is not proof.');else out.push('Frequency alone does not identify a problem. Compare reach, creative age and response over the same date range.');if(v.ctr>0){const implied=v.cpm/(10*v.ctr);if(Math.abs(implied-v.cpc)/Math.max(implied,.01)>.15)out.push(`These inputs may use different definitions or date ranges. CPM and link CTR imply a link CPC of approximately ${INR.format(implied)}. Check that every metric uses the same reporting window and click type.`);}else if(v.cpc>0)out.push('A zero link CTR with a non-zero link CPC may reflect rounding or mismatched metrics. Verify your report.');out.push('Before changing the campaign, inspect the sample size, conversion rate and cost per qualified outcome. No automatic diagnosis can establish the cause from four metrics.');return out;}
 function cpaAnalysis(v){const contribution=v.revenue-v.productCost-v.otherCost;return {contribution,target:contribution-v.profit,roas:contribution>0?v.revenue/contribution:null};}
@@ -72,5 +120,3 @@ fetch('data/campaign.json')
     if(d.note&&$('#campaign-note'))$('#campaign-note').textContent=d.note;
   })
   .catch(()=>{});
-
-
