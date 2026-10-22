@@ -14,3 +14,25 @@
 @media(max-width:600px){.case-art{min-height:240px}.project-info h3,.project-info>p{min-height:0}.meeting-card{grid-template-columns:1fr;padding:22px;gap:28px;margin-top:30px}.meeting-card h3{font-size:26px}.case-metrics{grid-template-columns:1fr}.case-metrics>div{border-right:0;border-bottom:1px solid #e2e9f2;padding:15px 18px}.case-sections>section{grid-template-columns:24px 1fr;gap:8px;padding:22px 0}.case-sections h3{font-size:18px}.case-sections p{font-size:13px}.authorship-note{padding:16px}.experiment{padding:22px}.experiment h3{font-size:23px}.experiment-metrics>div{padding:15px}.experiment-metrics span{font-size:10px}.experiment .neutral-pill{white-space:normal}.hiring-badge{font-size:10px}.meeting-card .fields{grid-template-columns:1fr}.contact-card .fields{grid-template-columns:1fr}}
 
 .delivery-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 10px}.contact-card .delivery-actions .button{gap:9px;padding:13px 10px;font-size:11px}.whatsapp-button{background:#128c60;color:white}.whatsapp-button:hover{background:#08784f}.message-preview{margin-top:14px;border:1px solid #dce5f2;border-radius:8px;background:#fff;padding:12px}.message-preview summary{cursor:pointer;font-size:12px;color:#0866ff;font-weight:600}.message-preview pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.8 Interface,Arial,sans-serif;color:#53677f;margin:12px 0 0}#contact-delivery>.text-link{margin-top:14px;font-size:11px}#contact-status{color:#37634e}.contact-card .interview-fields{margin-bottom:0}@media(max-width:380px){.delivery-actions{grid-template-columns:1fr}}
+
+/* Background & Commercial Journey */
+.about-strip{display:block;border-top:1px solid #dae3ef;padding:48px 0 0}
+.about-header{margin-bottom:32px}
+.about-header h2{font-size:clamp(28px,3vw,42px);font-weight:700;letter-spacing:-1px;line-height:1.2;margin:0 0 12px}
+.about-lead{font-size:14px;line-height:1.85;color:#5a6c85;max-width:800px;margin:0}
+.journey-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:32px}
+.journey-card{background:#fff;border:1px solid #dfe7f2;border-radius:12px;padding:26px;display:flex;flex-direction:column;box-shadow:0 3px 12px rgba(43,81,128,0.04);transition:transform .2s,box-shadow .2s,border-color .2s}
+.journey-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(8,102,255,0.08);border-color:#b8d5ff}
+.journey-kicker{font-size:10px;font-weight:700;letter-spacing:1.2px;color:#0866ff;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.journey-kicker span{background:#eaf2ff;padding:3px 7px;border-radius:4px;font-weight:800}
+.journey-card h3{font-size:19px;font-weight:700;letter-spacing:-.4px;color:#182338;margin:0 0 6px}
+.journey-card h4{font-size:12px;font-weight:600;color:#0866ff;margin:0 0 14px}
+.journey-card p{font-size:13px;line-height:1.8;color:#57677d;margin:0 0 18px;flex-grow:1}
+.journey-takeaway{background:#f5f8fd;border-left:3px solid #0866ff;padding:12px 14px;border-radius:0 6px 6px 0;font-size:12px;line-height:1.65;color:#394f6e}
+.journey-takeaway strong{color:#0866ff;font-weight:700}
+.about-footer-row{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#fff;border:1px solid #dfe7f2;border-radius:12px;padding:18px 24px}
+.education-badge{display:flex;align-items:center;gap:14px}
+.edu-icon{font-size:26px}
+.education-badge strong{display:block;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#708199;margin-bottom:2px}
+.education-badge span{font-size:13px;font-weight:600;color:#1d2b40}
+@media(max-width:960px){.journey-grid{grid-template-columns:1fr}.about-footer-row{flex-direction:column;align-items:flex-start}}
