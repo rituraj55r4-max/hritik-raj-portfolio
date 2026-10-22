@@ -63,3 +63,17 @@ function updateScroll(){frameQueued=false;const max=document.documentElement.scr
 addEventListener('scroll',()=>{if(!frameQueued){frameQueued=true;requestAnimationFrame(updateScroll);}},{passive:true});addEventListener('resize',updateScroll);scrollVideo.addEventListener('loadeddata',updateScroll);scrollVideo.addEventListener('seeked',seekBackground);scrollVideo.addEventListener('error',()=>{scrollVideo.style.display='none';$('.ambient').style.backgroundImage='url(assets/scroll-poster.jpg)';});
 const reveals=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');reveals.unobserve(e.target);}}),{threshold:.08});$$('.reveal').forEach(e=>reveals.observe(e));
 const navObserver=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){$$('.topbar nav a,.rail-links a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}});},{rootMargin:'-15% 0px -65% 0px',threshold:0});$$('main>section').forEach(s=>navObserver.observe(s));applyMotion();
+
+// Dynamic ad campaign data
+fetch('data/campaign.json')
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.status&&$('#campaign-status'))$('#campaign-status').textContent=d.status;
+    if(d.isLive&&$('#campaign-status')){$('#campaign-status').style.background='#e7f5ef';$('#campaign-status').style.color='#267458';}
+    if(d.spend&&$('#metric-spend'))$('#metric-spend').textContent=d.spend;
+    if(d.visits&&$('#metric-visits'))$('#metric-visits').textContent=d.visits;
+    if(d.enquiries&&$('#metric-enquiries'))$('#metric-enquiries').textContent=d.enquiries;
+    if(d.interviews&&$('#metric-interviews'))$('#metric-interviews').textContent=d.interviews;
+    if(d.note&&$('#campaign-note'))$('#campaign-note').textContent=d.note;
+  })
+  .catch(()=>{});
