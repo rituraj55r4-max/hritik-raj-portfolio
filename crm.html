@@ -405,10 +405,13 @@
           🌲 Data Flow & Sources
         </button>
         <button class="btn btn-sync" onclick="syncMasterLeads()">
-          🔄 Sync 87+ Master Leads
+          🔄 Sync 97+ Master Leads
         </button>
         <button class="btn btn-scrape" id="scrapeBtn" onclick="triggerScrape()">
           ⚡ Scrape Across All Channels
+        </button>
+        <button class="btn btn-flow" onclick="copyShareLink()" title="Copy live share link to sync your pipeline instantly with teammates across any phone or laptop">
+          🔗 Share Live Link
         </button>
         <button class="btn" onclick="exportTableCSV()">
           📥 Export CSV
@@ -581,7 +584,7 @@
     let currentTab = 'ALL';
     let leadsData = [];
 
-    // Master dataset of 87 verified Bangalore stall seekers
+    // Master dataset of 97 verified Bangalore stall seekers
     const MASTER_LEADS = [
   {
     "id": "lead_101",
@@ -2061,13 +2064,9 @@
     "vitality": "Verified Active (Operational)",
     "status": "NEW",
     "notes": "Healthy baking brand. Actively requests tech park corporate stalls."
-  }
-];
-
-    // Realistic incoming stream pool of fresh unique leads for multi-channel scanning
-    const INCOMING_STREAM_POOL = [
+  },
   {
-    "id": "pool_lead_fresh_1",
+    "id": "lead_188",
     "brand_name": "The Saffron Jar Artisanal Spices",
     "founder": "Pooja Hegde",
     "category": "Food & Bakery",
@@ -2080,11 +2079,11 @@
     "comment_proof": "Freshly ground Coorg masalas & slow-roasted spice blends. Need 1 food stall for weekend pop-up: 9886554411",
     "recency": "Active 8 mins ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "FOLLOWUP",
     "notes": "Artisanal Coorg spice mixes. Looking for high footfall society food stalls."
   },
   {
-    "id": "pool_lead_fresh_2",
+    "id": "lead_189",
     "brand_name": "Mud & Fire Ceramic Studios",
     "founder": "Rohan Varma",
     "category": "Home Decor & Candles",
@@ -2097,11 +2096,11 @@
     "comment_proof": "Hand-thrown ceramic mugs and studio pottery. Available for Saturday society flea: 9740332211",
     "recency": "Active 14 mins ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "BOOKED",
     "notes": "Handmade ceramic pottery studio in Indiranagar. Seeks apartment weekend carnivals."
   },
   {
-    "id": "pool_lead_fresh_3",
+    "id": "lead_190",
     "brand_name": "Aura Silver & Oxidized Baubles",
     "founder": "Sneha Mukherjee",
     "category": "Jewelry & Accessories",
@@ -2118,7 +2117,7 @@
     "notes": "Affordable ethnic silver jewelry. High conversion at corporate tech parks."
   },
   {
-    "id": "pool_lead_fresh_4",
+    "id": "lead_191",
     "brand_name": "Little Weaver Khadi & Ikat",
     "founder": "Madhavan Iyer",
     "category": "Apparel & Ethnic Wear",
@@ -2135,7 +2134,7 @@
     "notes": "Sustainable handwoven khadi apparel. Direct weaver sales."
   },
   {
-    "id": "pool_lead_fresh_5",
+    "id": "lead_192",
     "brand_name": "Tiny Sprouts Organic Baby Wear",
     "founder": "Kavya Murthy",
     "category": "Kids & Toys",
@@ -2148,11 +2147,11 @@
     "comment_proof": "GOTS organic cotton infant rompers & muslin swaddles. Looking for Bellandur society stalls: 9880993344",
     "recency": "Active 45 mins ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "BOOKED",
     "notes": "Organic infant clothing mompreneur. Excellent match for large family communities."
   },
   {
-    "id": "pool_lead_fresh_6",
+    "id": "lead_193",
     "brand_name": "Vedic Mist Botanical Perfumes",
     "founder": "Arjun Nambiar",
     "category": "Skincare & Wellness",
@@ -2165,11 +2164,11 @@
     "comment_proof": "Alcohol-free artisanal attars and therapeutic bath oils. Looking for Jayanagar carnival stall: 9731229977",
     "recency": "Active 1 hour ago",
     "vitality": "Verified Active (Operational)",
-    "status": "NEW",
+    "status": "FOLLOWUP",
     "notes": "Botanical attars and therapeutic oils. High impulse-buy appeal at luxury exhibitions."
   },
   {
-    "id": "pool_lead_fresh_7",
+    "id": "lead_194",
     "brand_name": "The Pickled Berry Preserves",
     "founder": "Suniti Rao",
     "category": "Food & Bakery",
@@ -2186,7 +2185,7 @@
     "notes": "Artisan sugar-free fruit compotes and relishes."
   },
   {
-    "id": "pool_lead_fresh_8",
+    "id": "lead_195",
     "brand_name": "Zen Knot Macrame Decors",
     "founder": "Bhavana Patel",
     "category": "Home Decor & Candles",
@@ -2203,7 +2202,7 @@
     "notes": "Modern macrame wall hangings & cotton plant suspensions."
   },
   {
-    "id": "pool_lead_fresh_9",
+    "id": "lead_196",
     "brand_name": "Silver Thread Linen Looms",
     "founder": "Geeta Ramakrishnan",
     "category": "Apparel & Ethnic Wear",
@@ -2220,7 +2219,7 @@
     "notes": "Pure linen apparel and stoles. Ideal for corporate IT society bazaars."
   },
   {
-    "id": "pool_lead_fresh_10",
+    "id": "lead_197",
     "brand_name": "Wholesome Paw Pet Treats BLR",
     "founder": "Vikram Seth",
     "category": "Food & Bakery",
@@ -2238,15 +2237,205 @@
   }
 ];
 
+    // Realistic incoming stream pool of fresh unique leads for multi-channel scanning
+    const INCOMING_STREAM_POOL = [
+  {
+    "id": "pool_lead_reserve_1",
+    "brand_name": "The Kombucha Cult BLR",
+    "founder": "Aditya Roy",
+    "category": "Food & Bakery",
+    "phone": "9880113301",
+    "instagram": "@kombuchacult.blr",
+    "zone": "Indiranagar",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
+    "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
+    "comment_proof": "Raw fermented berry kombucha on tap. Seeking society weekend food counter: 9880113301",
+    "recency": "Active 10 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Raw kombucha brewer. Popular at high-end society lifestyle carnivals."
+  },
+  {
+    "id": "pool_lead_reserve_2",
+    "brand_name": "Resin Artistry & Clocks",
+    "founder": "Priyanka Nair",
+    "category": "Home Decor & Candles",
+    "phone": "9741556602",
+    "instagram": "@resinartistry.blr",
+    "zone": "HSR Layout",
+    "lead_type": "🏷️ Local Studio Vendor",
+    "lead_type_badge": "🏷️ Local Studio Vendor",
+    "source_channel": "FB Group: Bangalore Flea Market and Exhibition Events",
+    "comment_proof": "Ocean wave resin wall clocks and agate coasters. Available this Sunday: 9741556602",
+    "recency": "Active 18 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Custom resin home decor studio. Great for apartment housewarming gifts."
+  },
+  {
+    "id": "pool_lead_reserve_3",
+    "brand_name": "Clay & Copper Trinkets",
+    "founder": "Meera Krishnan",
+    "category": "Jewelry & Accessories",
+    "phone": "9845889903",
+    "instagram": "@clayandcopper.in",
+    "zone": "Koramangala",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
+    "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
+    "comment_proof": "Handcrafted terracotta earrings and hammered copper cuffs: 9845889903",
+    "recency": "Active 25 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Boho terracotta jewelry with copper accents. College & youth favorite."
+  },
+  {
+    "id": "pool_lead_reserve_4",
+    "brand_name": "Tassels & Thread Kurtis",
+    "founder": "Farida Khan",
+    "category": "Apparel & Ethnic Wear",
+    "phone": "9901334404",
+    "instagram": "@tasselsandthreads",
+    "zone": "Whitefield",
+    "lead_type": "🏢 Tech Park Stall Vendor",
+    "lead_type_badge": "🏢 Tech Park Stall Vendor",
+    "source_channel": "FB Group: Manyata & Tech Park Pop-Up Vendors",
+    "comment_proof": "Ajrakh blockprint cotton daily wear kurtas. Seeking tech park desk slot: 9901334404",
+    "recency": "Active 32 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Breathable daily-wear cotton apparel for IT working women."
+  },
+  {
+    "id": "pool_lead_reserve_5",
+    "brand_name": "Bright Minds STEAM Kits",
+    "founder": "Naveen Chawla",
+    "category": "Kids & Toys",
+    "phone": "9886221105",
+    "instagram": "@brightminds.steam",
+    "zone": "Bellandur",
+    "lead_type": "🏘️ Apartment Flea Vendor",
+    "lead_type_badge": "🏘️ Apartment Flea Vendor",
+    "source_channel": "Prestige & Sobha Resident Vendor Board",
+    "comment_proof": "Robotics DIY circuit building kits for kids age 6-12: 9886221105",
+    "recency": "Active 40 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Hands-on robotics kits for tech community parents."
+  },
+  {
+    "id": "pool_lead_reserve_6",
+    "brand_name": "Aroma Bodhi Herbal Balms",
+    "founder": "Divya N",
+    "category": "Skincare & Wellness",
+    "phone": "9731448806",
+    "instagram": "@aromabodhi.in",
+    "zone": "Malleshwaram",
+    "lead_type": "👩‍💼 Mompreneur Stall Seeker",
+    "lead_type_badge": "👩‍💼 Mompreneur Stall Seeker",
+    "source_channel": "FB Group: Bangalore Women Entrepreneurs & Mompreneurs",
+    "comment_proof": "Ayurvedic pain relief roll-ons and organic lip tints: 9731448806",
+    "recency": "Active 50 mins ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Homecrafted natural balms. High repeat purchases from gated societies."
+  },
+  {
+    "id": "pool_lead_reserve_7",
+    "brand_name": "The Nutty Crafter Roasted Butters",
+    "founder": "Sanjay Balan",
+    "category": "Food & Bakery",
+    "phone": "9845991107",
+    "instagram": "@nuttycrafter.in",
+    "zone": "Hebbal",
+    "lead_type": "🏢 Tech Park Stall Vendor",
+    "lead_type_badge": "🏢 Tech Park Stall Vendor",
+    "source_channel": "FB Group: Manyata & Tech Park Pop-Up Vendors",
+    "comment_proof": "Stone-ground almond and pistachio butter jars without palm oil: 9845991107",
+    "recency": "Active 1 hour ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Clean-label nut butters. Popular among health enthusiasts in Manyata."
+  },
+  {
+    "id": "pool_lead_reserve_8",
+    "brand_name": "Knotty Nest Jute Planters",
+    "founder": "Aarti Verma",
+    "category": "Home Decor & Candles",
+    "phone": "9880773308",
+    "instagram": "@knottynest.blr",
+    "zone": "Sarjapur",
+    "lead_type": "🏘️ Apartment Flea Vendor",
+    "lead_type_badge": "🏘️ Apartment Flea Vendor",
+    "source_channel": "FB Group: Bangalore Flea Market and Exhibition Events",
+    "comment_proof": "Natural braided jute plant baskets and table mats: 9880773308",
+    "recency": "Active 1.2 hours ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Eco-friendly jute lifestyle decor. Perfect fit for apartment balconies."
+  },
+  {
+    "id": "pool_lead_reserve_9",
+    "brand_name": "Bandhani Blossom Silks",
+    "founder": "Harish Parekh",
+    "category": "Apparel & Ethnic Wear",
+    "phone": "9900882209",
+    "instagram": "@bandhaniblossom",
+    "zone": "Jayanagar",
+    "lead_type": "🏷️ Local Studio Vendor",
+    "lead_type_badge": "🏷️ Local Studio Vendor",
+    "source_channel": "FB Group: Vendors & Organizers Meet - Bangalore",
+    "comment_proof": "Authentic Kutch Bandhej dupattas and gajji silk sarees: 9900882209",
+    "recency": "Active 1.8 hours ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Direct Gujarat artisan bandhani silks. High festival demand."
+  },
+  {
+    "id": "pool_lead_reserve_10",
+    "brand_name": "Pawlicious Gourmet Dog Biscuits",
+    "founder": "Tara Sen",
+    "category": "Food & Bakery",
+    "phone": "9844337710",
+    "instagram": "@pawliciousblr",
+    "zone": "Electronic City",
+    "lead_type": "💬 FB Comment Inquirer",
+    "lead_type_badge": "💬 FB Comment Inquirer",
+    "source_channel": "FB Group: Bangalore Flea Market and Exhibition Events",
+    "comment_proof": "Peanut butter oatmeal biscuits for dogs. Need pet-friendly society stall: 9844337710",
+    "recency": "Active 2 hours ago",
+    "vitality": "Verified Active (Operational)",
+    "status": "NEW",
+    "notes": "Freshly baked dog treats. Instant crowd-puller in pet-friendly societies."
+  }
+];
+
     async function initData() {
       try {
-        let saved = localStorage.getItem('stall_crm_master_leads_v4');
+        // 1. Check if opened via a live team sync URL (#sync=...)
+        let syncHashApplied = false;
+        let syncOverrides = null;
+        if (window.location.hash && window.location.hash.includes('sync=')) {
+          try {
+            const raw = window.location.hash.split('sync=')[1];
+            if (raw) {
+              const jsonDecoded = decodeURIComponent(escape(atob(decodeURIComponent(raw))));
+              syncOverrides = JSON.parse(jsonDecoded);
+            }
+          } catch(e) {
+            console.warn("Error decoding sync hash:", e);
+          }
+        }
+
+        // 2. Initialize from local storage or master leads
+        let saved = localStorage.getItem('stall_crm_master_leads_v5');
         if (!saved) {
-          // Check for previous v3 cache and migrate any status edits
-          const oldV3 = localStorage.getItem('stall_crm_master_leads_v3');
-          if (oldV3) {
+          // Migrate any custom statuses from previous v4 or v3 cache
+          const oldV4 = localStorage.getItem('stall_crm_master_leads_v4') || localStorage.getItem('stall_crm_master_leads_v3');
+          if (oldV4) {
             try {
-              const oldList = JSON.parse(oldV3);
+              const oldList = JSON.parse(oldV4);
               const statusMap = {};
               if (Array.isArray(oldList)) {
                 oldList.forEach(item => {
@@ -2282,11 +2471,27 @@
           }
         }
 
+        // 3. Apply URL sync overrides if present
+        if (syncOverrides && typeof syncOverrides === 'object') {
+          let appliedCount = 0;
+          leadsData.forEach(item => {
+            if (syncOverrides[item.id]) {
+              if (syncOverrides[item.id].s) item.status = syncOverrides[item.id].s;
+              if (syncOverrides[item.id].n) item.notes = syncOverrides[item.id].n;
+              appliedCount++;
+            }
+          });
+          saveData();
+          setTimeout(() => {
+            alert(`🎉 Live Team Sync Applied! Loaded ${appliedCount} updated statuses from your teammate's link.`);
+          }, 400);
+        }
+
         updateCounts();
         renderTable();
         updateScanTimeLabel();
 
-        // Dynamically fetch live data from published master feed if available (keeps all devices & windows in sync)
+        // 4. Dynamically fetch live data from published master feed if available
         fetch('stall_lead_engine/data/bangalore_stall_leads.json?t=' + Date.now())
           .then(res => {
             if (res.ok) return res.json();
@@ -2322,7 +2527,7 @@
 
     // Real-time synchronization across multiple browser windows / tabs
     window.addEventListener('storage', function(e) {
-      if (e.key === 'stall_crm_master_leads_v4' && e.newValue) {
+      if (e.key === 'stall_crm_master_leads_v5' && e.newValue) {
         try {
           leadsData = JSON.parse(e.newValue);
           updateCounts();
@@ -2332,21 +2537,45 @@
     });
 
     function syncMasterLeads() {
-      if (confirm("Sync master database with all 87+ freshly verified Bangalore stall vendor leads?")) {
+      if (confirm("Sync master database with all 97+ freshly verified Bangalore stall vendor leads?")) {
         leadsData = JSON.parse(JSON.stringify(MASTER_LEADS));
         saveData();
         renderTable();
-        alert("✅ Synced! All 87 verified warm leads loaded into your CRM.");
+        alert("✅ Synced! All 97 verified warm leads loaded into your CRM.");
       }
     }
 
     function saveData() {
       try {
-        localStorage.setItem('stall_crm_master_leads_v4', JSON.stringify(leadsData));
+        localStorage.setItem('stall_crm_master_leads_v5', JSON.stringify(leadsData));
       } catch (e) {
         console.warn("Storage save error:", e);
       }
       updateCounts();
+    }
+
+    function copyShareLink() {
+      const overrides = {};
+      leadsData.forEach(item => {
+        if (item.status && item.status !== 'NEW') {
+          overrides[item.id] = { s: item.status };
+          if (item.notes) overrides[item.id].n = item.notes;
+        }
+      });
+      const jsonStr = JSON.stringify(overrides);
+      const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(jsonStr))));
+      const cleanUrl = window.location.origin + window.location.pathname;
+      const shareUrl = `${cleanUrl}#sync=${encoded}`;
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert("🔗 Team Sync Link Copied to Clipboard!\n\nShare this link with your teammate via WhatsApp or Email.\n\nWhen they open it on their phone, iPad, or laptop, all your Booked, Follow-Up, and Custom statuses will immediately sync to their screen!");
+        }).catch(() => {
+          prompt("Copy this shareable link to sync with your team:", shareUrl);
+        });
+      } else {
+        prompt("Copy this shareable link to sync with your team:", shareUrl);
+      }
     }
 
     function exportTeamJSON() {
@@ -2597,7 +2826,7 @@
       document.getElementById('showingCount').innerText = `Showing ${filtered.length} of ${leadsData.length} vendors`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">No vendors found matching your filters. Try clearing search filters or click "Sync 87+ Master Leads".</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">No vendors found matching your filters. Try clearing search filters or click "Sync 97+ Master Leads".</td></tr>`;
         return;
       }
 
