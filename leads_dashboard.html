@@ -2176,22 +2176,23 @@
 
           const names = freshToAdd.map(f => f.brand_name).join(" and ");
           notice.innerHTML = `<span style="color: #34d399; font-weight: 700;">✅ Scraped ${freshToAdd.length} new unique inquiries:</span> ${names}. Duplicate check passed.`;
-          alert(`🎉 Scrape Complete! Added ${freshToAdd.length} new unique stall inquiry leads:
 
-• ${freshToAdd[0].brand_name} (${freshToAdd[0].category} - ${freshToAdd[0].zone})
-${freshToAdd[1] ? '• ' + freshToAdd[1].brand_name + ' (' + freshToAdd[1].category + ' - ' + freshToAdd[1].zone + ')
-' : ''}
-🛡️ Duplicate check passed: 0 duplicate records re-added.`);
+          let alertMsg = "🎉 Scrape Complete! Added " + freshToAdd.length + " new unique stall inquiry leads:\n\n";
+          alertMsg += "• " + freshToAdd[0].brand_name + " (" + freshToAdd[0].category + " - " + freshToAdd[0].zone + ")\n";
+          if (freshToAdd[1]) {
+            alertMsg += "• " + freshToAdd[1].brand_name + " (" + freshToAdd[1].category + " - " + freshToAdd[1].zone + ")\n";
+          }
+          alertMsg += "\n🛡️ Duplicate check passed: 0 duplicate records re-added.";
+          alert(alertMsg);
         } else {
           // All known inquiries are already ingested!
           notice.innerHTML = `<span style="color: #fbbf24; font-weight: 700;">ℹ️ Channels checked (All data up to date):</span> No new inquiries posted since your last scan. Check back in 1 to 2 hours.`;
-          alert(`ℹ️ All Channel Data is Already Up To Date!
 
-Cross-checked against ${leadsData.length} existing vendor records across 6 Facebook groups and Tech Park boards.
-
-🛡️ Result: 0 duplicates re-added (all previously seen inquiries were skipped).
-
-⏳ Tip: Organizers and vendors post new stall requirements every 1 to 2 hours. Please check back in 1–2 hours for the next fresh batch.`);
+          let upToDateMsg = "ℹ️ All Channel Data is Already Up To Date!\n\n" +
+            "Cross-checked against " + leadsData.length + " existing vendor records across 6 Facebook groups and Tech Park boards.\n\n" +
+            "🛡️ Result: 0 duplicates re-added (all previously seen inquiries were skipped).\n\n" +
+            "⏳ Tip: Organizers and vendors post new stall requirements every 1 to 2 hours. Please check back in 1–2 hours for the next fresh batch.";
+          alert(upToDateMsg);
         }
       }, 2400);
     }
